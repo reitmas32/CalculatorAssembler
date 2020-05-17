@@ -6,11 +6,12 @@ title "Proyecto para EyPC 2020-2 Calculadora de dos numeros con Graficos"
 	.data
 	
 .code				;segmento de codigo
-include 'src\num.inc'
+include num.inc
 inicio:					;etiqueta inicio
 	mov ax,@data 		;AX = directiva @data, @data es una variable de sistema que contiene la direccion del segmento de datos 
 	mov ds,ax 			;DS = AX, inicializa segmento de datos
-    call num 5
+    call num
+	call num1
 salir:					;inicia etiqueta salir
 	mov ah,4Ch			;AH = 4Ch, opcion para terminar programa
 	mov al,0			;AL = 0 Exit Code, codigo devuelto al finalizar el programa
