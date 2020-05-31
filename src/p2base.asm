@@ -276,10 +276,22 @@ Cociente macro
 	;mov residuoDigito, ax
 	mov ax, num1h
 	mov bx,num2h
+	cmp bx, 0
+	je _DivCero
 	div bx
 	add resultadoLow, ax
 
 	convierte_Resultado
+	jmp salirCociente
+	_DivCero:
+	posiciona_cursor 6,55
+	imprime_caracter_color 78, cBlanco
+	posiciona_cursor 6,56
+	imprime_caracter_color 97, cBlanco
+	posiciona_cursor 6,57
+	imprime_caracter_color 78, cBlanco
+	jmp no_lee_num
+	salirCociente:
 endm Cociente
 
 Residuo macro
@@ -300,45 +312,57 @@ Residuo macro
 	;mov residuoDigito, ax
 	mov ax, num1h
 	mov bx,num2h
+	cmp bx, 0
+	je _DivCero
 	div bx
 	add resultadoLow, dx
 
 	convierte_Resultado
+	jmp salirResiduo
+	_DivCero2:
+	posiciona_cursor 6,55
+	imprime_caracter_color 78, cBlanco
+	posiciona_cursor 6,56
+	imprime_caracter_color 97, cBlanco
+	posiciona_cursor 6,57
+	imprime_caracter_color 78, cBlanco
+	jmp no_lee_num
+	salirResiduo:
 endm Residuo
 
 ImprimeResultado macro
 	posiciona_cursor 6,50
 	mov al, [resultado + 0]
 	add al, 48d
-	imprime_caracter_color al, cVerde
+	imprime_caracter_color al, cBlanco
 	posiciona_cursor 6,51
 	mov al, [resultado + 1]
 	add al, 48d
-	imprime_caracter_color al, cVerde
+	imprime_caracter_color al, cBlanco
 	posiciona_cursor 6,52
 	mov al, [resultado + 2]
 	add al, 48d
-	imprime_caracter_color al, cVerde
+	imprime_caracter_color al, cBlanco
 	posiciona_cursor 6,53
 	mov al, [resultado + 3]
 	add al, 48d
-	imprime_caracter_color al, cVerde	
+	imprime_caracter_color al, cBlanco	
 	posiciona_cursor 6,54
 	mov al, [resultado + 4]
 	add al, 48d
-	imprime_caracter_color al, cVerde
+	imprime_caracter_color al, cBlanco
 	posiciona_cursor 6,55
 	mov al, [resultado + 5]
 	add al, 48d
-	imprime_caracter_color al, cVerde
+	imprime_caracter_color al, cBlanco
 	posiciona_cursor 6,56
 	mov al, [resultado + 6]
 	add al, 48d
-	imprime_caracter_color al, cVerde
+	imprime_caracter_color al, cBlanco
 	posiciona_cursor 6,57
 	mov al, [resultado + 7]
 	add al, 48d
-	imprime_caracter_color al, cVerde
+	imprime_caracter_color al, cBlanco
 
 	cmp negativo, 0
 	je salirImprime
@@ -954,6 +978,8 @@ botonDEL_3:
 	;Se cumplieron todas las condiciones
 	;mov num_boton,0
 	;jmp jmp_lee_num1 		;Salto a 'jmp_lee_num1' para procesar el numero
+	cmp [flagIgual], 0
+	jne botonC_3
 	cmp [operador], 0
 	jne borra_num2
 	call BORRA_DIGITO_NUM_1
@@ -1072,6 +1098,7 @@ botonIgual_3:
 	;Se cumplieron todas las condiciones
 	posiciona_cursor 6, 45					;Posciono el CUrsor para poner el operador
 	mov cl, 3Dh								;Caracter de la Igual
+	mov flagIgual, 1
 	imprime_caracter_color cl, cAzulClaro	;Se imprime el caracter Igual
 	calculaResultado
 	jmp no_lee_num 
@@ -1249,6 +1276,7 @@ num1 			db 		digitos dup(0)		;primer numero, en cada localidad guarda 1 digito, 
 num2 			db 		digitos dup(0)		;segundo numero, en cada localidad guarda 1 digito, puede ser hasta 4 digitos
 negativo		db		0
 divCero			db		0
+flagIgual		db		0
 num1h			dw		0
 num2h			dw		0
 
@@ -1799,6 +1827,7 @@ salir:
 		mov [num_boton],0
 		mov [num1h],0
 		mov [num2h],0
+		mov [flagIgual], 0
 		mov [num_impr],0
 		mov [resultado + 0], 0
 		mov [resultado + 1], 0
