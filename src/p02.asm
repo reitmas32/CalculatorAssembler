@@ -1,4 +1,4 @@
-title "EyPC 2020-II Grupo 2 Proyecto 2 - Base"
+title "EyPC 2020-II Grupo 2 Proyecto 2"
 	.model small
 	.386
 	.stack 64
@@ -309,7 +309,6 @@ Residuo macro
 	xor ax, ax
 	xor dx, dx
 	mov resultadoLow, ax
-	;mov residuoDigito, ax
 	mov ax, num1h
 	mov bx,num2h
 	cmp bx, 0
